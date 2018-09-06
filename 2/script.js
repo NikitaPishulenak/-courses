@@ -14,8 +14,8 @@ function changeStyle(){
 
 //Ф-я очистки экрана и рисования макета flexbox
 function writeFlex(){
-	document.querySelector('body').innerHTML="";
-	document.querySelector('body').style.backgroundColor = '';
+	document.body.innerHTML="";
+	document.body.style.backgroundColor = '';
 	var d=document.createElement('div');
 	d.className='container';
 	document.body.appendChild(d);
