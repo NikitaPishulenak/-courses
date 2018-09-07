@@ -19,9 +19,13 @@ function Audio(title, author, pubOffice, pubYear, faculty, price, duration, form
 	this.format=format;
 }
 
-function Manual(title, author, pubOffice, pubYear, faculty, price, bindingType, complementCD){
+function Manual(title, author, pubOffice, pubYear, faculty, price, bindingType, complementCD, ibsnNumber){
 	Book.apply(this, arguments);
 	this.bindingType=bindingType;
 	this.complementCD=complementCD;
+	this.ibsnNumber=ibsnNumber;
 }
 
+var n = document.getElementById("tb").options.selectedIndex;
+// sel.style.color = '#ff44dd';
+console.log(n);
