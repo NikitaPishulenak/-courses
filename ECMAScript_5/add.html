@@ -19,7 +19,7 @@
 		         	var code='<p><label for="duration">Длительность(мин)<em>*</em></label><br><input type="text" id="duration" required min="1" pattern="\d+{1,5}" maxlength="5"></p><p><label for="format">Формат аудио<em>*</em></label><br><input type="text" id="format" placeholder=".mp3" required pattern="[a-zA-Z0-9\-\.]{2,6}" maxlength="6" value="."></p>';
 		            break;
 		        case "2":
-		         	var code='<p><label for="complementCD">Прилагается CD</label><input type="checkbox" id="complementCD" value="1"/></p><p><label for="isbnNumb">ISBN номер<em>*</em></label><br><input type="text" id="isbnNumb" required pattern="\d+{5}" placeholder="15243" maxlength="5"></p>'
+		         	var code='<p><label for="complementCD">Прилагается CD</label><input type="checkbox" id="complementCD"/></p><p><label for="isbnNumb">ISBN номер<em>*</em></label><br><input type="text" id="isbnNumb" required pattern="\d+{5}" placeholder="15243" maxlength="5"></p>'
 		        	break;
 		     }
 		     f.innerHTML=code;
@@ -34,8 +34,11 @@
 				    obj.setFormat(document.getElementById("format").value);
 		            break;
 		        case "2":
-		        	console.log(document.getElementById("complementCD").value);
+		        	console.log(document.getElementById("complementCD").checked);
 		         	var obj=new Manual();
+		         	(document.getElementById("complementCD").checked) ? obj.setComplementCD("1") : obj.setComplementCD("0");
+				    obj.setISBNNumber(document.getElementById("isbnNumb").value);
+				    obj.setPubOffice(document.getElementById("pubOffice").value);
 		        	break;
 		    }
 		    obj.setTitle(document.getElementById("title").value);
@@ -44,9 +47,10 @@
 		    obj.setFaculty(document.getElementById("faculty").value);
 		    obj.setPrice(document.getElementById("price").value);
 		    
-		    console.log(obj);
+		    
 
-			//location.href="../ECMAScript_5/";
+			// location.href="../ECMAScript_5/";
+			// console.log(obj);
 		}
 
 		</script>
