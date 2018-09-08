@@ -2,10 +2,79 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<script type="text/javascript" src="add.js"></script>
 	<link rel="stylesheet" href="style.css">
+	<script type="text/javascript" src="script.js"></script>
 </head>
 <body>
+	<form id=formAddBook>
+	    <h2>Добавление книги</h2>
+
+	    <script>
+		function selectChanged(value) {
+			// console.log(value);
+			var f=document.getElementById("endForm");
+		        
+		     switch(value) {
+		         case "1":
+		         	var code='<p><label for="duration">Длительность(мин)<em>*</em></label><br><input type="text" id="duration" required min="1" pattern="\d+{1,5}" maxlength="5"></p><p><label for="format">Формат аудио<em>*</em></label><br><input type="text" id="format" placeholder=".mp3" required pattern="[a-zA-Z0-9\-\.]{2,6}" maxlength="6" value="."></p>';
+		            break;
+		        case "2":
+		         	var code='<p><label for="complementCD">Прилагается CD</label><input type="checkbox" id="complementCD" value="1"/></p><p><label for="isbnNumb">ISBN номер<em>*</em></label><br><input type="text" id="isbnNumb" required pattern="\d+{5}" placeholder="15243" maxlength="5"></p>'
+		        	break;
+		     }
+		     f.innerHTML=code;
+		}
+
+		function Add(){
+			var tb=document.getElementById("tb").value;
+			switch(tb) {
+		         case "1":
+		         	var obj=new Audio();
+		         	obj.setDuration(document.getElementById("duration").value);
+				    obj.setFormat(document.getElementById("format").value);
+		            break;
+		        case "2":
+		        	console.log(document.getElementById("complementCD").value);
+		         	var obj=new Manual();
+		        	break;
+		    }
+		    obj.setTitle(document.getElementById("title").value);
+		    obj.setAuthor(document.getElementById("author").value);
+		    obj.setPubYear(document.getElementById("pubYear").value);
+		    obj.setFaculty(document.getElementById("faculty").value);
+		    obj.setPrice(document.getElementById("price").value);
+		    
+		    console.log(obj);
+
+			//location.href="../ECMAScript_5/";
+		}
+
+		</script>
+
+	    <p><label for="typeBook">Тип книги<em>*</em></label><br>
+		<select required name="typeBook" id="tb" onchange="selectChanged(this.value);">
+			<option  value="">Выберите тип</option>
+		    <option value="1">Аудиокнига</option>
+		    <option value="2">Печатная книга</option>
+		</select>
+	    </p>
+
+	    <p><label for="title">Название книги <em>*</em></label><br><input type="text" id="title" required pattern="^[А-Я]{1}[а-яА-Я\-\s]{2,50}|[A-Z]{1}[a-zA-Z\-\s]{2,50}$" maxlength="50"></p>
+	    
+	    <p><label for="author">Автор<em>*</em></label><br><input type="text" id="author" required pattern="^[А-Я]{1}[а-яА-Я\-\s\.]{2,30}|[A-Z]{1}[a-zA-Z\-\s\.]{2,30}$" placeholder="Пушкин А.С." maxlength="30"></p>
+	    
+	    <p><label for="pubYear">Год публикации<em>*</em></label><br><input type="text" id="pubYear" placeholder="2017" required pattern="^\d{4}" maxlength="4" min="1700" max="2018"></p>
+
+	    <p><label for="pubOffice">Издательство<em>*</em></label><br><input type="text" id="pubOffice" required pattern="^[А-Я]{1}[а-яА-Я\-\s]{2,50}|[A-Z]{1}[a-zA-Z\-\s]{2,50}$" maxlength="50"></p>
+
+	    <p><label for="faculty">Область науки<em>*</em></label><br><input type="text" id="faculty" required pattern="^[А-Я]{1}[а-яА-Я\-\s]{2,50}|[A-Z]{1}[a-zA-Z\-\s]{2,50}$" maxlength="50"></p>
+
+	    <p><label for="price">Цена<em>*</em></label><br><input type="text" id="price" required pattern="[0-9\.\,]{1,8}" maxlength="8"></p>
+	    <div id="endForm"></div>
+
+		<p><input type="submit" value="Отправить" onclick="Add();">
+			<input type="reset" value="Очистить"></p>
+	</form>
 	
 </body>
 </html>

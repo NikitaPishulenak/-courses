@@ -3,46 +3,17 @@
 <head>
 	<meta charset="UTF-8">
 	<title>1 HOME WORK (2 task)</title>
+<!-- 	<script type="text/javascript" src="construct.js"></script> -->
 	<script type="text/javascript" src="script.js"></script>
 	<link rel="stylesheet" href="style.css">
+	
 </head>
 <body>
 	<div id="content">
-		<button id="addBook" onclick="return addBook();">Создать</button>
+		<button id="addBook" onclick='location.href="add.html"'>Создать</button><br><br>
 	</div>
+	<div id="book-table"></div>
 
-	<form>
-	  <fieldset>
-	    <legend>Добавление книги</legend>
-	    <p><label for="typeBook">Тип книги<em>*</em></label><br>
-		<select name="typeBook" id="tb" onchange="alert(this.options[this.selectedIndex].value);">
-		    <option value="Аудиокнига">Аудиокнига</option>
-		    <option value="Печатная книга">Печатная книга</option>
-		</select>
-	    </p>
-
-	    <p><label for="title">Название книги <em>*</em></label><br><input type="text" id="title" required pattern="^[А-Я]{1}[а-яА-Я\-\s]{2,50}|[A-Z]{1}[a-zA-Z\-\s]{2,50}$" maxlength="50"></p>
-	    
-	    <p><label for="author">Автор<em>*</em></label><br><input type="text" id="author" required pattern="^[А-Я]{1}[а-яА-Я\-\s\.]{2,30}|[A-Z]{1}[a-zA-Z\-\s\.]{2,30}$" placeholder="Пушкин А.С." maxlength="30"></p>
-	    
-	    <p><label for="pubYear">Год публикации<em>*</em></label><br><input type="text" id="pubYear" required pattern="^\d{4}" maxlength="4"></p>
-
-	    <p><label for="pubOffice">Издательство<em>*</em></label><br><input type="text" id="pubOffice" required pattern="^[А-Я]{1}[а-яА-Я\-\s]{2,50}|[A-Z]{1}[a-zA-Z\-\s]{2,50}$" maxlength="50"></p>
-
-	    <p><label for="faculty">Область науки<em>*</em></label><br>
-		<select name="faculty" required>
-		    <option value="Искусство">Искусство</option>
-		    <option selected value="Общественные науки">Общественные науки</option>
-		    <option value="Живопись">Живопись</option>
-		    <option value="Вычислительная техника">Вычислительная техника</option>
-		    <option value="Прочее">Прочее</option>
-		</select>
-	    </p>
-	    <p><label for="price">Цена<em>*</em></label><br><input type="text" id="price" required pattern="[0-9\.\,]{1,8}" maxlength="8"></p>
-
-	  </fieldset>
-	<p><input type="submit" value="Отправить"></p>
-	</form>
-	
+		
 </body>
 </html>
