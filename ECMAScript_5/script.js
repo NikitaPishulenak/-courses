@@ -70,7 +70,7 @@ function Audio(title, author, pubYear, faculty, price, duration, format){
 		if(dur>0 && dur<100000){
 			this.duration=dur;
 		}else{
-			throw "Длительность должна быть от 0 до 100000!";
+			this.duration=1;
 		}
 	}
 
@@ -134,6 +134,7 @@ var b3=new Manual("Солдат Швейк", "Гашек Я.", "1987", "Рома
   	elTable.appendChild(createTR(b1));
   	elTable.appendChild(createTR(b2));
   	elTable.appendChild(createTR(b3));
+  	elTable.appendChild("</table>");
 
  }
 
@@ -155,5 +156,19 @@ function createTable(obj){
 		+ author + '</span></td><td class="year"><span>' + year + '</span></td><td class="fac"><span>' 
 		+ fac + '</span></td><td class="price"><span>' + price + '</span></td>'+
 		'<td class="make"><a href="#">редактировать</a> / <a href="#">удалить</a></td></tr>';
+}
+
+function checkFormAdd(){
+	var form=document.getElementById("formAddBook");
+	var elsements=form.getElementsByClassName("checkI");
+	var isGood=true;
+	console.log(elsements);
+	for(var i=0; i<elsements.length; i++){
+		console.log(document.getElementById(elsements[i].id).value);
+		if(document.getElementById(elsements[i].id).value==""){
+			isGood=false;
+		}		
+	}
+	return isGood;
 }
 
