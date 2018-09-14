@@ -1,174 +1,242 @@
-//Конструктор родителя
-function Book(title, author, pubYear, faculty, price){
-	this.title=title;
-	this.author=author;
-	this.pubYear=pubYear;
-	this.faculty=faculty;
-	this.price=price;
-
-
-	this.getTitle=function(){
-		return this.title;
-	}
-	this.setTitle=function(tit){
-		this.title=tit;
-	}
-
-
-	this.getAuthor=function(){
-		return this.author;
-	}
-	this.setAuthor=function(auth){
-		this.author=auth;
-	}
-
-
-	this.getPubYear=function(){
-		return this.pubYear+"г.";
-	}
-	this.setPubYear=function(year){
-		if(year>=1700 && year<=2018){
-			this.pubYear=year;
-		}else{
-			throw "Недопустимое значение года!";
-		}
-	}
-
-
-	this.getFaculty=function(){
-		return this.faculty;
-	}
-	this.setFaculty=function(fac){
-		this.faculty=fac;
-	}
-
-
-	this.getPrice=function(){
-		return this.price+" руб.";
-	}
-	this.setPrice=function(price){
-		if(price>0 && price<1000000){
-			this.price=price;
-		}else{
-			throw "Стоимость должна быть в пределе 0-1000000 руб."
-		}
-	}
+function showError(error) {
+  var message = "An error occured";
+  if (error.message) {
+      message = error.message;
+  } else if (error.errors) {
+      var errors = error.errors;
+      message = "";
+      Object.keys(errors).forEach(function(k) {
+          message += k + ": " + errors[k] + "\n";
+      });
+  }
+  alert(message);
 }
 
+document.addEventListener("DOMContentLoaded", function(event) { 
+  loadBooks();
 
-//Конструктор 1-го наследника
-function Audio(title, author, pubYear, faculty, price, duration, format){
-	Book.apply(this, arguments);
-	this.duration=duration;
-	this.format=format;
-
-
-	this.getDuration=function(){
-		return this.duration+" мин.";
-	}
-	this.setDuration=function(dur){
-		if(dur>0 && dur<100000){
-			this.duration=dur;
-		}else{
-			this.duration=1;
-		}
-	}
+  function loadBooks() {
+    dpd.books.get(function(books, error) {
+      books.forEach(function(book) { 
+        addBook(book);
+      });
+    });
+  }
 
 
-	this.getFormat=function(){
-		return this.format;
-	}
-	this.setFormat=function(form){
-		this.format=form;
-	}
-}
+  function addBook(book) {
+    var a=new Book(book.title, book.author, book.pubYear, book.faculty, book.price, book.duration, book.format);
 
 
-//Конструктор 2-го наследника
-function Manual(title, author, pubYear, faculty, price, pubOffice, complementCD, ibsnNumber){
-	Book.apply(this, arguments);
-	this.pubOffice=pubOffice;
-	this.complementCD=complementCD;
-	this.ibsnNumber=ibsnNumber;
 
+    var editLink = $('<a href="#">E</a>');
+    var deleteLink = $('<a href="#">D</a>');
+    var infoLink = $('<a href="#">I</a>');
 
-	this.getComplementCD=function(){
-		var res;
-		(this.complementCD==1) ? res="Да" : res="Нет";
-		return res;
-	}
-	this.setComplementCD=function(compl){
-		(compl==1) ? this.complementCD=1 : this.complementCD=0;
-	}
+    var booksBlock=document.getElementById("booksInfo");
 
+    var div = $('<tr class="books">').append('<td class="title">'+a.getTitle()+'</td><td class="author">'+a.getAuthor()+
+      '</td><td class="year">'+a.getPubYear()+'</td><td class="fac">'+a.getFaculty()+'</td><td class="price">'+a.getPrice()+'</td><td><a href="#" class="edt">E</a></td>')
+      .append(infoLink).append("<span>  /  </span>").append(editLink).append("<span>  /  </span>").append(deleteLink)
+      .appendTo('#books');
+    
 
-	this.getISBNNumber=function(){
-		return this.ibsnNumber;
-	}
-	this.setISBNNumber=function(numb){
-		this.ibsnNumber=numb;
-	}
+        
+    deleteLink.click(function() {
+        var isDel=confirm("Вы действительно жедаете удалить запись?");
+        if(isDel){
+          
+          $.ajax({
+            type: 'get',
+            url: 'del.php',
+            data: {
+              'id': ""//здесь ид записи из БД 
+            },
+            success: function (st) {
+              console.log("Запись удалена!");
+            },
+            error: function () {
+              alert("Не удалось передать данные для удаления записи");
+            }
+          });  
 
+          dpd.books.del(book.id, function(success, error) {
+            if (error) 
+              return showError(error);
+            div.remove();
+          });
+        }
+        return false;
+      });
+    
 
-	this.getPubOffice=function(){
-		return this.pubOffice;
-	}
-	this.setPubOffice=function(office){
-		this.pubOffice=office;
-	}
-}
+    editLink.click(function() {
+      var infoBlock=document.getElementById("detail");
+      dpd.books.get(book.id, function(success, error) { 
+        if (error) 
+            return showError(error);
 
-var b1=new Audio("Сказка", "Народы мира", "2000", "Сказки", "1,3", "21", "mp3");
-var b2=new Manual("Муму", "Тургенев И.С.", "2011", "Рассказ", "12,1", "Белый свет", "1", "54362");
-var b3=new Manual("Солдат Швейк", "Гашек Я.", "1987", "Роман", "26", "Асвета", "1", "04321");
+          var result='<form name="edtForma"><strong>Редактирование записи:</strong><input type="hidden" id="typeB" value="'+book.typeB+'"><br><p><label for="title">Название книги<em>*</em></label><br><input type="text" class="checkI" '+
+        'id="title" required pattern="\w+{2,50}" maxlength="50" value="'+book.title+'"></p>'+
+        '<p><label for="author">Автор<em>*</em></label><br><input type="text"  class="checkI" id="author" required'+
+        'pattern="^\w+{2,50}$" placeholder="Пушкин А.С." maxlength="30" value="'+book.author+'"></p>'+
+        '<p><label for="pubYear">Год публикации<em>*</em></label><br><input type="text"  class="checkI" id="pubYear" '+
+        'placeholder="2017" required maxlength="4" min="1700" max="2018" value="'+book.pubYear+'"></p>'+
+        '<p><label for="pubOffice">Издательство<em>*</em></label><br><input type="text"  class="checkI" id="pubOffice"'+
+        'required pattern="^\w+{2,50}{2,50}$" maxlength="50" value="'+book.pubOffice+'"></p>'+
+        '<p><label for="faculty">Область науки<em>*</em></label><br><input type="text"  class="checkI" id="faculty"'+
+        'required pattern="^\w+{2,50}$" maxlength="50" value="'+book.faculty+'"></p>'+
+        '<p><label for="price">Цена<em>*</em></label><br><input type="number"  class="checkI" id="price" required maxlength="8" value="'+book.price+'"></p>';
 
+        if(book.typeB==1){
+          result+='<p><label for="duration">Длительность(мин)<em>*</em></label><br><input type="text" class="checkI" id="duration"'+
+          ' required min="1" maxlength="5" pattern="[\d]{,5}" value="'+book.duration+'"></p>'+
+          '<p><label for="format">Формат аудио<em>*</em></label><br><input type="text" class="checkI" id="format" placeholder=".mp3" '+
+          'required  maxlength="6" value="'+book.format+'"></p>';
+        }
+        else if(book.typeB==2){
+          (book.complementCD==1) ? result+='<p><label for="complementCD">Прилагается CD</label><input type="checkbox" id="complementCD" checked/></p>' : 
+          result+='<p><label for="complementCD">Прилагается CD</label><input type="checkbox" id="complementCD" /></p>';
+          
+          result+='<p><label for="isbnNumb">ISBN номер<em>*</em></label><br><input type="text" class="checkI" id="isbnNumb" required  placeholder="15243" '+
+          ' maxlength="5" value="'+book.isbnNumb+'"></p>';
+        }
 
- window.onload = function() {
- 	var elTable=document.getElementById("book-table");
+        result+='<p><input type="submit" value="Сохранить" id="button_edit"></p></form>';
+        infoBlock.innerHTML=result;
+        
+        document.forms['edtForma'].onsubmit = function(){ 
+          switch (document.getElementById("typeB").value) {
+            case "1":
+                $.ajax({
+                  type: 'get',
+                  url: 'edt.php',
+                  data: {
+                    'title': document.getElementById("title").value,
+                    'author': document.getElementById("author").value,
+                    'pubYear': document.getElementById("pubYear").value,
+                    'pubOffice': document.getElementById("pubOffice").value,
+                    'faculty': document.getElementById("faculty").value,
+                    'price': document.getElementById("price").value,
+                    'duration': document.getElementById("duration").value,
+                    'format': document.getElementById("format").value
+                  },
+                  success: function (st) {
+                      console.log("Данные о редактировании переданы!");
+                  },
+                  error: function () {
+                      alert("Произошла ошибка при попытке передать данные");
+                  }
+                });
 
-    var newLi = document.createElement('table');
-  	newLi.innerHTML = "<th class='title'>Название книги</th><th class='author'>Автор</th><th class='year'>"+
-  	"Год изд.</th><th class='fac'>Обл. науки</th><th class='price'>Цена</th><th class='make'>Действие</th>";
-  	elTable.appendChild(newLi);
-  	
-  	elTable.appendChild(createTR(b1));
-  	elTable.appendChild(createTR(b2));
-  	elTable.appendChild(createTR(b3));
-  	elTable.appendChild("</table>");
+              dpd.books.put(book.id, {
+                  title: document.getElementById("title").value,
+                  author: document.getElementById("author").value,
+                  pubYear: document.getElementById("pubYear").value,
+                  pubOffice: document.getElementById("pubOffice").value,
+                  faculty: document.getElementById("faculty").value,
+                  price: document.getElementById("price").value,
+                  duration: document.getElementById("duration").value,
+                  format: document.getElementById("format").value
+                }, function(result, error) {
+                if (error) { return showError(error); }
+                else{
+                  alert("Редактирование аудио успешно произведено!");
+                  window.location.reload();
+                  //loadBooks();
+                }
+              });
+              break;
+            case "2":
+              var compCD=(document.getElementById("complementCD").checked) ? "1" : "0";
 
- }
+              $.ajax({
+                  type: 'get',
+                  url: 'edt.php',
+                  data: {
+                    'title': document.getElementById("title").value,
+                    'author': document.getElementById("author").value,
+                    'pubYear': document.getElementById("pubYear").value,
+                    'pubOffice': document.getElementById("pubOffice").value,
+                    'faculty': document.getElementById("faculty").value,
+                    'price': document.getElementById("price").value,
+                    'complementCD': compCD,
+                    'isbnNumber': document.getElementById("isbnNumb").value
+                  },
+                  success: function (st) {
+                      console.log("Данные о редактировании переданы!");
+                  },
+                  error: function () {
+                      alert("Произошла ошибка при попытке передать данные");
+                  }
+              });
 
-function createTR(obj){
-	var nextLine=document.createElement('tr');
-  	nextLine.innerHTML=createTable(obj);
-  	return nextLine;
-}
+              dpd.books.put(book.id, {
+                  title: document.getElementById("title").value,
+                  author: document.getElementById("author").value,
+                  pubYear: document.getElementById("pubYear").value,
+                  pubOffice: document.getElementById("pubOffice").value,
+                  faculty: document.getElementById("faculty").value,
+                  price: document.getElementById("price").value,
+                  complementCD: compCD,
+                  isbnNumber: document.getElementById("isbnNumb").value
+                }, function(result, error) {
+                if (error) { return showError(error); }
+                else{
+                  alert("Редактирование печатной книги успешно произведено!");
+                  window.location.reload();
+                }
+              });
+              break;
+          }
+          
+       return false;  
+        
+       }    
+      });
+      
+       return false;    
+    });
 
+    infoLink.click(function(){
+      var infoBlock=document.getElementById("detail");
+      
+      $.ajax({
+        type: 'get',
+        url: 'info.php',
+        data: {
+          'id': ""//здесь ид записи из БД 
+        },
+        success: function (st) {
+          console.log("Данные получены!");
+        },
+        error: function () {
+          alert("Произошла ошибка при попытке получить данные");
+        }
+      });    
 
-function createTable(obj){
-	var title = obj.getTitle();
-	var author = obj.getAuthor();
-	var year = obj.getPubYear();
-	var fac = obj.getFaculty();
-	var price = obj.getPrice();
-
-	return '<tr class="tableLine"><td class="title"><span>' + title + '</span></td><td class="author"><span>' 
-		+ author + '</span></td><td class="year"><span>' + year + '</span></td><td class="fac"><span>' 
-		+ fac + '</span></td><td class="price"><span>' + price + '</span></td>'+
-		'<td class="make"><a href="#">редактировать</a> / <a href="#">удалить</a></td></tr>';
-}
-
-function checkFormAdd(){
-	var form=document.getElementById("formAddBook");
-	var elsements=form.getElementsByClassName("checkI");
-	var isGood=true;
-	console.log(elsements);
-	for(var i=0; i<elsements.length; i++){
-		console.log(document.getElementById(elsements[i].id).value);
-		if(document.getElementById(elsements[i].id).value==""){
-			isGood=false;
-		}		
-	}
-	return isGood;
-}
-
+      dpd.books.get(book.id, function(success, error) { 
+        if (error) 
+            return showError(error);
+          var result="<strong>Подробная Информация:</strong><br>";
+          result+="<p><strong>Название книги: </strong>"+book.title+"</p><p><strong>Автор: </strong>"+book.author+"</p>"+
+          "<p><strong>Год издания: </strong>"+book.pubYear+"</p><p><strong>Издательство: </strong>"+book.pubOffice+"</p><p><strong>Область науки: </strong>"+book.faculty+"</p>"+
+          "<p><strong>Цена: </strong>"+book.price+"</p>";
+          (book.duration) ? (result+="<p><strong>Длительность: </strong>"+book.duration+"</p>") : "";
+          (book.format) ? (result+="<p><strong>Формат аудио: </strong>"+book.format+"</p>") : "";
+          (book.complementCD) ? (result+="<p><strong>Диск прилагается: </strong>"+book.complementCD+"</p>") : "";
+          (book.isbnNumber) ? (result+="<p><strong>ISBN номер: </strong>"+book.isbnNumber+"</p>") : "";
+          
+          infoBlock.innerHTML=result;
+      });
+       // window.open("details.html?id="+book);
+    });
+  }
+  //var userSelection = document.getElementsByClassName('edt');
+  [].forEach.call(document.querySelectorAll('.test'), function(item) {
+    item.addEventListener('click', function() {
+      alert("OK class");
+    });
+  });
+    
+});

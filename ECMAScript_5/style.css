@@ -1,26 +1,8 @@
-label em{
-	color: #f00;
-	margin-left: -3px;
-}
-
-input[type=reset]{
-	margin-left: 10px;
-}
-
-body form{
-	padding: 20px 60px 10px 80px;
-	position: absolute;
-	left: 50%;
-	transform: translate(-50%, 0);
-	border: 1px solid #cdcdcd;
-	box-shadow: 0 0 10px rgba(0,0,0,0.5);
-}
-
-td{
-	border: 1px solid #000;
-	border-collapse: collapse;
-}
-
+label em{ color: #f00; margin-left: -3px;}
+input[type=reset]{ margin-left: 10px;}
+input[type=text], input[type=number]{ border-left: solid 4px #aaa;}
+table, td{ border: solid 1px #000; border-collapse: collapse; padding: 5px;}
 .title, .make, .author, .fac{	width: 200px;}
 .year, .price{ width: 100px; }
-
+strong.title, strong.make, strong.author, strong.fac, strong.year, strong.price{ padding:0 6px 0 6px; display: inline-block;}
+div#detail{ border: solid #ccc 1px; border-radius: 5px; box-shadow: 0 0 10px rgba(0,0,0,0.5); position: relative; padding: 3px 7px 3px 7px; width: 400px;}

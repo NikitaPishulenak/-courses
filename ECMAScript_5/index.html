@@ -1,19 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>1 HOME WORK (2 task)</title>
-<!-- 	<script type="text/javascript" src="construct.js"></script> -->
-	<script type="text/javascript" src="script.js"></script>
-	<link rel="stylesheet" href="style.css">
-	
-</head>
-<body>
-	<div id="content">
-		<button id="addBook" onclick='location.href="add.html"'>Создать</button><br><br>
-	</div>
-	<div id="book-table"></div>
+  <html>
+  <head>
+    <title>Deployd</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="/dpd.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+    <script type="text/javascript" src="constr.js"></script>
 
-		
-</body>
-</html>
+  </head>
+  <body>
+    <div class="container">
+      <div id="books">
+        <button id="add" onclick="location.href='/add.html'">Добавить книгу</button><div style="margin-bottom: 100px;"></div>
+
+      	<strong class='title'>Название книги</strong><strong class='author'>Автор</strong><strong class='year'>Год изд.</strong><strong class='fac'>Обл. науки</strong><strong class='price'>Цена</strong>
+        <div id="booksInfo"></div>
+      </div>
+      <div style="margin-bottom: 100px;"></div>
+
+      <div id="detail"></div>
+      <div style="margin-bottom: 100px;"> </div>
+      
+    </div>
+
+  </body>
+  </html>
