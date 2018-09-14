@@ -66,12 +66,30 @@
       <script type="text/javascript">
       	
       	document.forms['forma'].onsubmit = function(){ 
-        location.href="add.html"
 
   		    switch(v) {
                    case "1":
-                      
-                                        
+                    $.ajax({
+                      type: 'post',
+                      url: 'add.php',
+                      data: {
+                        'title': document.getElementById("title").value,
+                        'author': document.getElementById("author").value,
+                        'pubYear': document.getElementById("pubYear").value,
+                        'pubOffice': document.getElementById("pubOffice").value,
+                        'faculty': document.getElementById("faculty").value,
+                        'price': document.getElementById("price").value,
+                        'duration': document.getElementById("duration").value,
+                        'format': document.getElementById("format").value
+                      },
+                      success: function (st) {
+                          console.log("Информация о книге передана!");
+                      },
+                      error: function () {
+                          alert("Произошла ошибка при попытке передать данные");
+                      }
+                    });
+                                                   
                       dpd.books.post({
                           typeB: v,
                           title: document.getElementById("title").value,
@@ -87,7 +105,6 @@
                           else{alert('Аудиокнига добавлена!');}
                       return false;
                     });
-                      location.href="index.html";
 
                       break;
 
@@ -95,6 +112,27 @@
                   case "2":
                     
                     var compCD=(document.getElementById("complementCD").checked) ? "1" : "0";
+                    $.ajax({
+                      type: 'post',
+                      url: 'add.php',
+                      data: {
+                        'title': document.getElementById("title").value,
+                        'author': document.getElementById("author").value,
+                        'pubYear': document.getElementById("pubYear").value,
+                        'pubOffice': document.getElementById("pubOffice").value,
+                        'faculty': document.getElementById("faculty").value,
+                        'price': document.getElementById("price").value,
+                        'complementCD': compCD,
+                        'isbnNumber': document.getElementById("isbnNumb").value
+                      },
+                      success: function (st) {
+                          console.log("Информация о книге передана!");
+                      },
+                      error: function () {
+                          alert("Произошла ошибка при попытке передать данные");
+                      }
+                    });
+
                     dpd.books.post({
                           typeB: v,
                           title: document.getElementById("title").value,
@@ -110,11 +148,14 @@
                           else{alert('Печатная книга добавлена!');}
                       return false;
                     });
-                    location.href="../index.html";
                     break;
+
                }
+               function(){window.location.href="../";}
   		 }
 
       </script>
+
+
 </body>
 </html>

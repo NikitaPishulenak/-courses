@@ -23,8 +23,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
   }
 
+
   function addBook(book) {
     var a=new Book(book.title, book.author, book.pubYear, book.faculty, book.price, book.duration, book.format);
+
+
 
     var editLink = $('<a href="#">E</a>');
     var deleteLink = $('<a href="#">D</a>');
@@ -33,23 +36,38 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var booksBlock=document.getElementById("booksInfo");
 
     var div = $('<tr class="books">').append('<td class="title">'+a.getTitle()+'</td><td class="author">'+a.getAuthor()+
-      '</td><td class="year">'+a.getPubYear()+'</td><td class="fac">'+a.getFaculty()+'</td><td class="price">'+a.getPrice()+'</td>')
+      '</td><td class="year">'+a.getPubYear()+'</td><td class="fac">'+a.getFaculty()+'</td><td class="price">'+a.getPrice()+'</td><td><a href="#" class="edt">E</a></td>')
       .append(infoLink).append("<span>  /  </span>").append(editLink).append("<span>  /  </span>").append(deleteLink)
       .appendTo('#books');
     
 
         
     deleteLink.click(function() {
-      var isDel=confirm("Вы действительно жедаете удалить запись?");
-      if(isDel){
-        dpd.books.del(book.id, function(success, error) {
-          if (error) 
-            return showError(error);
-          div.remove();
-        });
-      }
-      return false;
-    });
+        var isDel=confirm("Вы действительно жедаете удалить запись?");
+        if(isDel){
+          
+          $.ajax({
+            type: 'get',
+            url: 'del.php',
+            data: {
+              'id': ""//здесь ид записи из БД 
+            },
+            success: function (st) {
+              console.log("Запись удалена!");
+            },
+            error: function () {
+              alert("Не удалось передать данные для удаления записи");
+            }
+          });  
+
+          dpd.books.del(book.id, function(success, error) {
+            if (error) 
+              return showError(error);
+            div.remove();
+          });
+        }
+        return false;
+      });
     
 
     editLink.click(function() {
@@ -90,6 +108,27 @@ document.addEventListener("DOMContentLoaded", function(event) {
         document.forms['edtForma'].onsubmit = function(){ 
           switch (document.getElementById("typeB").value) {
             case "1":
+                $.ajax({
+                  type: 'get',
+                  url: 'edt.php',
+                  data: {
+                    'title': document.getElementById("title").value,
+                    'author': document.getElementById("author").value,
+                    'pubYear': document.getElementById("pubYear").value,
+                    'pubOffice': document.getElementById("pubOffice").value,
+                    'faculty': document.getElementById("faculty").value,
+                    'price': document.getElementById("price").value,
+                    'duration': document.getElementById("duration").value,
+                    'format': document.getElementById("format").value
+                  },
+                  success: function (st) {
+                      console.log("Данные о редактировании переданы!");
+                  },
+                  error: function () {
+                      alert("Произошла ошибка при попытке передать данные");
+                  }
+                });
+
               dpd.books.put(book.id, {
                   title: document.getElementById("title").value,
                   author: document.getElementById("author").value,
@@ -110,6 +149,28 @@ document.addEventListener("DOMContentLoaded", function(event) {
               break;
             case "2":
               var compCD=(document.getElementById("complementCD").checked) ? "1" : "0";
+
+              $.ajax({
+                  type: 'get',
+                  url: 'edt.php',
+                  data: {
+                    'title': document.getElementById("title").value,
+                    'author': document.getElementById("author").value,
+                    'pubYear': document.getElementById("pubYear").value,
+                    'pubOffice': document.getElementById("pubOffice").value,
+                    'faculty': document.getElementById("faculty").value,
+                    'price': document.getElementById("price").value,
+                    'complementCD': compCD,
+                    'isbnNumber': document.getElementById("isbnNumb").value
+                  },
+                  success: function (st) {
+                      console.log("Данные о редактировании переданы!");
+                  },
+                  error: function () {
+                      alert("Произошла ошибка при попытке передать данные");
+                  }
+              });
+
               dpd.books.put(book.id, {
                   title: document.getElementById("title").value,
                   author: document.getElementById("author").value,
@@ -139,6 +200,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     infoLink.click(function(){
       var infoBlock=document.getElementById("detail");
+      
+      $.ajax({
+        type: 'get',
+        url: 'info.php',
+        data: {
+          'id': ""//здесь ид записи из БД 
+        },
+        success: function (st) {
+          console.log("Данные получены!");
+        },
+        error: function () {
+          alert("Произошла ошибка при попытке получить данные");
+        }
+      });    
+
       dpd.books.get(book.id, function(success, error) { 
         if (error) 
             return showError(error);
@@ -156,5 +232,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
        // window.open("details.html?id="+book);
     });
   }
-
+  //var userSelection = document.getElementsByClassName('edt');
+  [].forEach.call(document.querySelectorAll('.test'), function(item) {
+    item.addEventListener('click', function() {
+      alert("OK class");
+    });
+  });
+    
 });
