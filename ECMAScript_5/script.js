@@ -1,9 +1,9 @@
 function showError(error) {
-  var message = "An error occured";
+  let message = "An error occured";
   if (error.message) {
       message = error.message;
   } else if (error.errors) {
-      var errors = error.errors;
+      let errors = error.errors;
       message = "";
       Object.keys(errors).forEach(function(k) {
           message += k + ": " + errors[k] + "\n";
@@ -25,17 +25,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
 
   function addBook(book) {
-    var a=new Book(book.title, book.author, book.pubYear, book.faculty, book.price, book.duration, book.format);
+    let a=new Book(book.title, book.author, book.pubYear, book.faculty, book.price, book.duration, book.format);
 
 
 
-    var editLink = $('<a href="#">E</a>');
-    var deleteLink = $('<a href="#">D</a>');
-    var infoLink = $('<a href="#">I</a>');
+    const editLink = $('<a href="#">E</a>');
+    const deleteLink = $('<a href="#">D</a>');
+    const infoLink = $('<a href="#">I</a>');
 
-    var booksBlock=document.getElementById("booksInfo");
+    const booksBlock=document.getElementById("booksInfo");
 
-    var div = $('<tr class="books">').append('<td class="title">'+a.getTitle()+'</td><td class="author">'+a.getAuthor()+
+    let div = $('<tr class="books">').append('<td class="title">'+a.getTitle()+'</td><td class="author">'+a.getAuthor()+
       '</td><td class="year">'+a.getPubYear()+'</td><td class="fac">'+a.getFaculty()+'</td><td class="price">'+a.getPrice()+'</td><td><a href="#" class="edt">E</a></td>')
       .append(infoLink).append("<span>  /  </span>").append(editLink).append("<span>  /  </span>").append(deleteLink)
       .appendTo('#books');
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
         
     deleteLink.click(function() {
-        var isDel=confirm("Вы действительно жедаете удалить запись?");
+        let isDel=confirm("Вы действительно жедаете удалить запись?");
         if(isDel){
           
           $.ajax({
@@ -71,12 +71,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     
 
     editLink.click(function() {
-      var infoBlock=document.getElementById("detail");
+      const infoBlock=document.getElementById("detail");
       dpd.books.get(book.id, function(success, error) { 
         if (error) 
             return showError(error);
 
-          var result='<form name="edtForma"><strong>Редактирование записи:</strong><input type="hidden" id="typeB" value="'+book.typeB+'"><br><p><label for="title">Название книги<em>*</em></label><br><input type="text" class="checkI" '+
+          let result='<form name="edtForma"><strong>Редактирование записи:</strong><input type="hidden" id="typeB" value="'+book.typeB+'"><br><p><label for="title">Название книги<em>*</em></label><br><input type="text" class="checkI" '+
         'id="title" required pattern="\w+{2,50}" maxlength="50" value="'+book.title+'"></p>'+
         '<p><label for="author">Автор<em>*</em></label><br><input type="text"  class="checkI" id="author" required'+
         'pattern="^\w+{2,50}$" placeholder="Пушкин А.С." maxlength="30" value="'+book.author+'"></p>'+
@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
               });
               break;
             case "2":
-              var compCD=(document.getElementById("complementCD").checked) ? "1" : "0";
+              let compCD=(document.getElementById("complementCD").checked) ? "1" : "0";
 
               $.ajax({
                   type: 'get',
@@ -199,7 +199,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
     infoLink.click(function(){
-      var infoBlock=document.getElementById("detail");
+      const infoBlock=document.getElementById("detail");
+      var newWin = window.open();
+      newWin.title="jrj";
       
       $.ajax({
         type: 'get',
@@ -218,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       dpd.books.get(book.id, function(success, error) { 
         if (error) 
             return showError(error);
-          var result="<strong>Подробная Информация:</strong><br>";
+          let result="<strong>Подробная Информация:</strong><br>";
           result+="<p><strong>Название книги: </strong>"+book.title+"</p><p><strong>Автор: </strong>"+book.author+"</p>"+
           "<p><strong>Год издания: </strong>"+book.pubYear+"</p><p><strong>Издательство: </strong>"+book.pubOffice+"</p><p><strong>Область науки: </strong>"+book.faculty+"</p>"+
           "<p><strong>Цена: </strong>"+book.price+"</p>";
@@ -227,16 +229,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
           (book.complementCD) ? (result+="<p><strong>Диск прилагается: </strong>"+book.complementCD+"</p>") : "";
           (book.isbnNumber) ? (result+="<p><strong>ISBN номер: </strong>"+book.isbnNumber+"</p>") : "";
           
-          infoBlock.innerHTML=result;
+          //infoBlock.innerHTML=result;
+          newWin.document.write(result);
       });
        // window.open("details.html?id="+book);
     });
   }
-  //var userSelection = document.getElementsByClassName('edt');
-  [].forEach.call(document.querySelectorAll('.test'), function(item) {
-    item.addEventListener('click', function() {
-      alert("OK class");
-    });
-  });
+
     
 });

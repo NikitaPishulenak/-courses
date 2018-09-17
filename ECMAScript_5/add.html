@@ -20,7 +20,7 @@
           function selectChanged(value) {
           // console.log(value);
           v=value;
-          var f=document.getElementById("endForm");
+          const f=document.getElementById("endForm");
                 
              switch(value) {
                  case "1":
@@ -111,7 +111,7 @@
 
                   case "2":
                     
-                    var compCD=(document.getElementById("complementCD").checked) ? "1" : "0";
+                    let compCD=(document.getElementById("complementCD").checked) ? "1" : "0";
                     $.ajax({
                       type: 'post',
                       url: 'add.php',
@@ -151,7 +151,7 @@
                     break;
 
                }
-               function(){window.location.href="../";}
+               // function(){window.location.href="../";}
   		 }
 
       </script>

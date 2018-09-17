@@ -7,50 +7,37 @@ function Book(title, author, pubYear, faculty, price){
 	this.price=price;
 
 
-	this.getTitle=function(){
-		return this.title;
-	}
-	this.setTitle=function(tit){
-		this.title=tit;
-	}
+	this.getTitle=()=>this.title;
+	this.setTitle=tit=>this.title=tit;
 
+	this.getAuthor=()=>this.author;
+	this.setAuthor=auth=>this.author=auth;
 
-	this.getAuthor=function(){
-		return this.author;
-	}
-	this.setAuthor=function(auth){
-		this.author=auth;
-	}
-
-
-	this.getPubYear=function(){
-		return this.pubYear+"г.";
-	}
+	this.getPubYear=()=>this.pubYear+"г.";
+	
 	this.setPubYear=function(year){
 		if(year>=1700 && year<=2018){
 			this.pubYear=year;
-		}else{
-			throw "Недопустимое значение года!";
+		}else if(year<1700){
+			this.pubYear=1700;
+		}
+		else if(year>2018){
+			this.pubYear=2018;
 		}
 	}
 
 
-	this.getFaculty=function(){
-		return this.faculty;
-	}
-	this.setFaculty=function(fac){
-		this.faculty=fac;
-	}
+	this.getFaculty=()=>this.faculty;
+	this.setFaculty=fac=>this.faculty=fac;
 
-
-	this.getPrice=function(){
-		return this.price+" руб.";
-	}
+	this.getPrice=()=>this.price+" руб.";
 	this.setPrice=function(price){
 		if(price>0 && price<1000000){
 			this.price=price;
-		}else{
-			throw "Стоимость должна быть в пределе 0-1000000 руб."
+		}else if(price<=0){
+			this.price=0;
+		}else if(price>=1000000){
+			this.price=1000000;
 		}
 	}
 }
@@ -63,9 +50,7 @@ function Audio(title, author, pubYear, faculty, price, duration, format){
 	this.format=format;
 
 
-	this.getDuration=function(){
-		return this.duration+" мин.";
-	}
+	this.getDuration=()=>this.duration+" мин.";
 	this.setDuration=function(dur){
 		if(dur>0 && dur<100000){
 			this.duration=dur;
@@ -75,12 +60,8 @@ function Audio(title, author, pubYear, faculty, price, duration, format){
 	}
 
 
-	this.getFormat=function(){
-		return this.format;
-	}
-	this.setFormat=function(form){
-		this.format=form;
-	}
+	this.getFormat=()=>this.format;
+	this.setFormat=form=>this.format=form;
 }
 
 
@@ -101,21 +82,11 @@ function Manual(title, author, pubYear, faculty, price, pubOffice, complementCD,
 		(compl==1) ? this.complementCD=1 : this.complementCD=0;
 	}
 
+	this.getISBNNumber=()=>this.ibsnNumber;
+	this.setISBNNumber=numb=>this.ibsnNumber=numb;
 
-	this.getISBNNumber=function(){
-		return this.ibsnNumber;
-	}
-	this.setISBNNumber=function(numb){
-		this.ibsnNumber=numb;
-	}
-
-
-	this.getPubOffice=function(){
-		return this.pubOffice;
-	}
-	this.setPubOffice=function(office){
-		this.pubOffice=office;
-	}
+	this.getPubOffice=()=>this.pubOffice;
+	this.setPubOffice=office=>this.pubOffice=office;
 }
 
 // var b1=new Audio("Сказка", "Народы мира", "2000", "Сказки", "1,3", "21", "mp3");
@@ -177,4 +148,3 @@ function Manual(title, author, pubYear, faculty, price, pubOffice, complementCD,
 // 	}
 // 	return isGood;
 // }
-
