@@ -60,19 +60,9 @@ let result=fIter(str);
 
 
 
-//локализация
-let number = 123456.789;
-        
-        console.group('numbers');
-        console.log(new Intl.NumberFormat('en-CA', { style: 'decimal'}).format(number));
-        console.log(new Intl.NumberFormat('ar-EG', { style: 'decimal'}).format(number));
-        console.log(new Intl.NumberFormat('fr-CA', { style: 'decimal'}).format(number));
-        console.groupEnd('numbers');
-        
-        console.group('currency');
-        console.log(new Intl.NumberFormat('cn-CY', { style: 'currency', currency: 'CNY' }).format(number));
-        console.log(new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' }).format(number));
-        console.log(new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'EUR' }).format(number));
-        console.log(new Intl.NumberFormat('ja-JP', { style: 'currency', currency: 'JPY' }).format(number));
-        console.log(new Intl.NumberFormat('en-IN', { maximumSignificantDigits: 3 }).format(number));
-        console.groupEnd('currency');
+//локализация даты
+console.group('date');
+console.log(new Intl.DateTimeFormat().format(new Date()));
+console.log(new Intl.DateTimeFormat('en-US').format(new Date()));
+console.log(new Intl.DateTimeFormat('ar-EG').format(new Date()));
+console.groupEnd('date');
