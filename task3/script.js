@@ -66,3 +66,38 @@ console.log(new Intl.DateTimeFormat().format(new Date()));
 console.log(new Intl.DateTimeFormat('en-US').format(new Date()));
 console.log(new Intl.DateTimeFormat('ar-EG').format(new Date()));
 console.groupEnd('date');
+
+
+//Mix-in
+//базовый класс
+class Poligon{
+	test(){
+		alert("Вызвана функция test базового класса");
+	}
+}
+
+//mixin1
+const Storage = Sup => class extends Sup {
+    save(){
+    	alert("Данные сохранены в БД");
+    }
+};
+
+//mixin2
+const Validate = Sup => class extends Sup {
+    validate(){
+    	alert("Данные проверены");
+    }
+};
+
+class MultiPoligon extends Storage(Validate(Poligon)){
+	deleteFromDB(){
+		alert("Данные из БД удалены");
+	}
+}
+
+let A=new MultiPoligon();
+A.deleteFromDB();
+A.save();
+A.test();
+A.validate();
