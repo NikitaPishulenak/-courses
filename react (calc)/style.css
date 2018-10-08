@@ -1,0 +1,15 @@
+#box{
+    margin-top: 50px;
+    width: 80%;
+    margin: 0 auto;
+    align-items: stretch;
+}
+
+#box div{
+    margin: 20px;
+    /* display: flex;
+    justify-content: space-around;
+    align-content: center; */
+}
+
+input, select{width: 80px; height: 30px; margin: 20px;}

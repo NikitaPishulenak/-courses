@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>React</title>
+    
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css"> 
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>  -->
+
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <div class="container">
+        <div id="box"></div>
+    </div>
+    
+    <div id="result"></div>
+    
+    <script type="text/babel">
+ 
+
+        class Block extends React.Component{
+            // constructor(props){
+            //     super(props);
+            //     this.state={
+            //         edt:false,
+            //     };
+            // };
+
+            render(){
+
+            }
+        }
+
+
+        class Field extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    oper: "plus",
+                    firstV: "0",
+                    secondV: "1",
+                };
+            };
+
+            operation=(x,y,operation)=>{
+                switch(operation){
+                    case "plus":
+                        return Number(x)+Number(y);
+                    break;
+
+                    case "minus":
+                        return Number(x)-Number(y);
+                    break;
+
+                    case "multiply":
+                        return Number(x)*Number(y);
+                    break;
+
+                    case "slice":
+                        return Number(x)/Number(y);
+                    break;
+
+                }
+            };
+
+            change=()=>{
+                this.setState({
+                    oper: this.refs.sel.value,
+                    firstV: this.refs.first.value,
+                    secondV: this.refs.second.value
+                });
+            };
+
+            render() {
+                return (
+                <div className="row">
+                    <input type="text" placeholder="X" ref="first" defaultValue="0" onChange={this.change}/>
+                    <select id="op"ref="sel" onChange={this.change}>
+                        <option value="plus">+</option>
+                        <option value="minus">-</option>
+                        <option value="multiply">*</option>
+                        <option value="slice">/</option>
+                    </select>
+                    <input type="text" placeholder="Y" ref="second" defaultValue="1" onChange={this.change}/> 
+                    <h1>={this.operation(this.state.firstV, this.state.secondV, this.state.oper)}</h1>
+                    
+                </div>
+                );
+            }
+        }
+
+
+      ReactDOM.render(
+        <Field />,
+        document.getElementById('box')
+      );
+
+    </script>
+
+  </body>
+</html>
